@@ -9,11 +9,7 @@ import (
 func ACL(r *http.Request, container, target ACLTarget) (rules ACLRules, err error) {
 
 	// get service
-	sp := service.Providers.MustGet("ACLRule")
-	s, err := sp(r)
-	if err != nil {
-		return
-	}
+	s := service.Providers.MustService(r, "ACLRule")
 
 	// search container rules
 	crules := []ACLRule{}
@@ -47,11 +43,7 @@ func ACL(r *http.Request, container, target ACLTarget) (rules ACLRules, err erro
 func PutACLRule(r *http.Request, target ACLTarget, actor ACLActor, scope ACLScope) (err error) {
 
 	// get service
-	sp := service.Providers.MustGet("ACLRule")
-	s, err := sp(r)
-	if err != nil {
-		return
-	}
+	s := service.Providers.MustService(r, "ACLRule")
 
 	// search existing rule
 	rule := &ACLRule{}
@@ -82,11 +74,7 @@ func PutACLRule(r *http.Request, target ACLTarget, actor ACLActor, scope ACLScop
 func DeleteACLRule(r *http.Request, target ACLTarget, actor ACLActor) (err error) {
 
 	// get service
-	sp := service.Providers.MustGet("ACLRule")
-	s, err := sp(r)
-	if err != nil {
-		return
-	}
+	s := service.Providers.MustService(r, "ACLRule")
 
 	// delete the rules
 	conds := service.NewConds()
