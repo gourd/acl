@@ -14,12 +14,7 @@ func ACL(r *http.Request, container, target ACLTarget) (rules ACLRules, err erro
 	// search container rules
 	crules := []ACLRule{}
 	cq := service.NewQuery().AddCond("target", container)
-	result, err := s.Search(cq)
-	if err != nil {
-		return
-	}
-
-	err = result.All(&crules)
+	err = s.Search(cq).All(&crules)
 	if err != nil {
 		return
 	}
@@ -30,16 +25,10 @@ func ACL(r *http.Request, container, target ACLTarget) (rules ACLRules, err erro
 	// search target rules
 	trules := []ACLRule{}
 	tq := service.NewQuery().AddCond("target", target)
-	result, err = s.Search(tq)
+	err = s.Search(tq).All(&trules)
 	if err != nil {
 		return
 	}
-
-	err = result.All(&trules)
-	if err != nil {
-		return
-	}
-
 	for _, r := range trules {
 		rules = append(rules, r)
 	}
